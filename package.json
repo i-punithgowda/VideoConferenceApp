@@ -1,0 +1,12 @@
+{
+    "name": "LearnFinity",
+    "version": "1.0.0",
+    "description": "LearnFinity",
+    "main": "index.js",
+    "scripts": {
+      "start": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+    },
+    "author": "Punith Gowda S P",
+    "license": "MIT"
+  }
+  
