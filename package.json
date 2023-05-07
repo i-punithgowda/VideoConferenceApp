@@ -4,9 +4,17 @@
     "description": "LearnFinity",
     "main": "index.js",
     "scripts": {
-      "start": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+        "start": "concurrently \"cd client && npm start\" \"cd server && npm start\""
     },
     "author": "Punith Gowda S P",
-    "license": "MIT"
-  }
-  
+    "license": "MIT",
+    "dependencies": {
+        "@emotion/react": "^11.10.8",
+        "@emotion/styled": "^11.10.8",
+        "@fortawesome/fontawesome-svg-core": "^6.4.0",
+        "@fortawesome/free-solid-svg-icons": "^6.4.0",
+        "@fortawesome/react-fontawesome": "^0.2.0",
+        "@mui/material": "^5.12.3",
+        "react-router-dom": "^6.11.1"
+    }
+}

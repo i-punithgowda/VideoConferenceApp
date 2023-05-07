@@ -5,8 +5,8 @@ import Home from "./Pages/Home";
 import Error from "./Pages/Error";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import Dashboard from "./Pages/Dashboard";
 import ProtectedRoute from "./Components/ProtectedRoutes/ProtectedRoute";
+import Intermediate from "./Components/Dashboard/Intermediate";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Intermediate />
             </ProtectedRoute>
           }
         />

@@ -4,6 +4,9 @@ require("dotenv").config();
 const db = require("./db/db");
 const UserHandler = require("./controller/UserHandler");
 const VideoHandler = require("./controller/VideoHandler");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const fs = require("fs");
 
 const app = express();
 app.use(cors());
@@ -35,7 +38,23 @@ app.post("/login", UserHandler.login);
 
 //Video related routes
 
-app.post("/save-video", VideoHandler.SaveVideo);
+app.post("/save-video", upload.single("file"), (req, res) => {
+  try {
+    console.log(req.file);
+    const fileData = req.file;
+
+    // Create a new file stream to save the uploaded file as an MP4
+    const fileStream = fs.createWriteStream(`uploads/${fileData.filename}.mp4`);
+
+    // Pipe the uploaded file data to the file stream
+    fs.createReadStream(fileData.path).pipe(fileStream);
+
+    // Respond to the client with a success message
+    res.send("File uploaded successfully");
+  } catch (err) {
+    res.send(err);
+  }
+});
 app.post("/save-attendance", VideoHandler.SaveAttendance);
 app.post("/save-comment", VideoHandler.SaveComments);
 app.post("/save-reply", VideoHandler.SaveReplies);

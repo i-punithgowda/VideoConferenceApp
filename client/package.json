@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.12.3",
+    "@react-oauth/google": "^0.11.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -13,8 +18,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.11.0",
+    "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
+    "react-social-login-buttons": "^3.6.1",
+    "typeit-react": "^2.6.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

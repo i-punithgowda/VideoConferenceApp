@@ -15,7 +15,7 @@ const UserHandler = {
   getColleges: async (req, res) => {
     try {
       const data = await User.getColleges();
-      res.send(data).status(200);
+      res.json(data).status(200);
     } catch (err) {
       console.log(err);
       res.send("Something went wrong !! please try again.").status(500);

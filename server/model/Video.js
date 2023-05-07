@@ -3,12 +3,14 @@ const uuid = require("uuid");
 
 const Video = {};
 
-Video.saveVideo = (data) => {
-  const id = uuid.v4();
-  return db.query(
-    `INSERT INTO Video_Stream VALUES (${id},${data.title},${data.description},${data.start_time},${data.end_time},${data.host_id},${data.path})`
-  );
-};
+// Video.saveVideo = (data) => {
+//   const id = uuid.v4();
+//   return db.query(
+//     `INSERT INTO Video_Stream VALUES (${id},${data.title},${data.description},${data.start_time},${data.end_time},${data.host_id},${data.path})`
+//   );
+// };
+
+Video.saveVideo = (data) => {};
 
 Video.saveAttendance = async (data) => {
   const { stream_id, users_attended } = data;

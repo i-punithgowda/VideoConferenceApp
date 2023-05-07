@@ -4,7 +4,7 @@ var db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "punith123",
-  database: "LearnFinity",
+  database: "edumeet",
 });
 
 module.exports = db;

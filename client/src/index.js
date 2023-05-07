@@ -6,13 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./features/store/store";
 import NoInternetConnection from "./features/NoInternetConnection";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const clientID = process.env.REACT_APP_CLIENTID;
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <NoInternetConnection>
-        <App />
+        <GoogleOAuthProvider clientId={clientID}>
+          <App />
+        </GoogleOAuthProvider>
       </NoInternetConnection>
     </Provider>
   </React.StrictMode>
