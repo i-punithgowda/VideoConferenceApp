@@ -79,7 +79,7 @@ function Additional(props) {
       <div className="user-info w-full h-full lg:w-8/12 bg-neutral-content  lg:h-5/6 lg:rounded-2xl p-5 flex justify-center items-center flex-col">
         <h1 className="text text-secondary text-xl lg:text-3xl font-bold">
           {" "}
-          New here ? we need few more details
+          New here ? we need few more details!!
         </h1>
 
         <div className="fields-container  flex flex-col    h-5/6 lg:h-4/6 justify-evenly items-center w-10/12">
