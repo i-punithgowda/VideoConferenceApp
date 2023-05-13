@@ -69,11 +69,11 @@ const UserHandler = {
   createUser: async (req, res) => {
     try {
       const data = req.body;
-      await User.create(data);
-      res.send("Registered Succesfully!!").status(200);
+      const status = await User.create(data);
+      res.status(200).send(status);
     } catch (err) {
       console.log(err);
-      res.send("Something went wrong !! please try again.").status(500);
+      res.status(500).send(err);
     }
   },
 
@@ -105,7 +105,18 @@ const UserHandler = {
       res.status(200).send(response);
     } catch (err) {
       console.log(err);
-      res.status(500).send("Something went wrong !! try again later...");
+      res.status(500).send(err);
+    }
+  },
+
+  oauth: async (req, res) => {
+    try {
+      const data = req.body;
+      const response = await User.oauth(data);
+      res.status(200).send(response);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
     }
   },
 
@@ -117,6 +128,50 @@ const UserHandler = {
     } catch (err) {
       console.log(err);
       res.status(500).send("Something went wrong !! try again later...");
+    }
+  },
+
+  userStatus: async (req, res) => {
+    try {
+      const data = req.body;
+      const response = await User.getStatus(data);
+      res.status(200).send(response);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  },
+
+  verifyUser: async (req, res) => {
+    try {
+      const data = req.body;
+      const response = await User.verify(data);
+      res.status(200).send(response);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  },
+
+  additionalInfo: async (req, res) => {
+    try {
+      const data = req.body;
+      const response = await User.additionalInfo(data);
+      res.status(200).send(response);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  },
+
+  forgotPassword: async (req, res) => {
+    try {
+      const data = req.body;
+      const response = await User.forgotPassword(data);
+      res.status(200).send(response);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
     }
   },
 };

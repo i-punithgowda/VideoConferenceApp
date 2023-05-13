@@ -1,30 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import EduMeetLogo from "../assets/png/EduMeetLogo.png";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+import { Link, useNavigate } from "react-router-dom";
 import AuthImage from "../assets/svg/auth.svg";
 import TypeIt from "typeit-react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLoginButton } from "react-social-login-buttons";
+import { currentUserModifier } from "../features/reducers/current-user-slice";
+import { useDispatch } from "react-redux";
+import { authModifier } from "../features/reducers/auth-slice";
 
-function Login() {
+function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const baseURL = process.env.REACT_APP_BASEAPI;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const signIn = useGoogleLogin({
     clientId:
       "867159813249-kjf4fe4ne3bujmvmkv4jncaeus9aanbt.apps.googleusercontent.com",
     onSuccess: async (response) => {
       console.log(response);
       const accessToken = response.access_token;
-      const data = await axios.get(
+      const { data } = await axios.get(
         `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${accessToken}`
       );
-      console.log(data);
+
+      const res = await axios.post(`${baseURL}/oauth`, {
+        email: email,
+      });
+      console.log(res);
+
+      if (res.data.status === true) {
+        dispatch(authModifier(true));
+        dispatch(currentUserModifier(data.email));
+        navigate("/dashboard");
+      }
     },
     onError: (error) => {
       console.log("Login Failure. Error: ", error);
     },
   });
+
+  const handleRegister = async () => {
+    try {
+      const { data } = await axios.post(`${baseURL}/create-user`, {
+        email: email,
+        password: password,
+      });
+
+      alert(data.message);
+    } catch (err) {
+      alert("Error : ", err);
+    }
+  };
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-base-200">
@@ -60,6 +90,8 @@ function Login() {
                 variant="outlined"
                 size="small"
                 sx={{ width: "300px", marginY: "10px" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 id="outlined-basic"
@@ -68,9 +100,14 @@ function Login() {
                 size="small"
                 sx={{ width: "300px", marginY: "10px" }}
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
-              <button className="btn btn-secondary btn-wide my-5">
+              <button
+                className="btn btn-secondary btn-wide my-5"
+                onClick={handleRegister}
+              >
                 Register
               </button>
 
@@ -101,4 +138,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

@@ -1,21 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const DashboardState = createSlice({
+export const StateModification = createSlice({
   name: "state",
-  initialState: [],
+  initialState: {
+    currState: "stream",
+  },
   reducers: {
     stateModifier: (state, action) => {
-      const stateModifier = {
-        text: action.payload,
-      };
-
-      return [stateModifier];
+      console.log(action.payload);
+      state.value = action.payload;
     },
   },
 });
 
 // this is for dispatch
-export const { currentState } = DashboardState.actions;
+export const { stateModifier } = StateModification.actions;
 
 // this is for configureStore
-export default DashboardState.reducer;
+export default StateModification.reducer;

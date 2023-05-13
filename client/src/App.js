@@ -7,6 +7,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import ProtectedRoute from "./Components/ProtectedRoutes/ProtectedRoute";
 import Intermediate from "./Components/Dashboard/Intermediate";
+import Verify from "./Pages/Verify";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route exact path="/verify/:email" element={<Verify />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>

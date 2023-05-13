@@ -1,30 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const Authentication = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: [],
   reducers: {
-    stateModifier: (state, action) => {
+    authModifier: (state, action) => {
       const authenticator = {
         text: action.payload || false,
-        
       };
-      
-      return [authenticator]
 
+      return [authenticator];
     },
-   
-          
-    
-
-
-      
-  
-}
+  },
 });
 
 // this is for dispatch
-export const {stateModifier} = Authentication.actions;
+export const { authModifier } = Authentication.actions;
 
 // this is for configureStore
 export default Authentication.reducer;

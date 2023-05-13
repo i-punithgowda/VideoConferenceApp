@@ -31,11 +31,22 @@ app.post("/save-dept", UserHandler.saveDepartment);
 app.get("/get-college-dept/:userID", UserHandler.getCollegeAndDepartmentOfUser);
 
 //user
-app.post("/save-user", UserHandler.createUser);
+
+//normal-auth
+
+app.post("/create-user", UserHandler.createUser);
+app.post("/login", UserHandler.login);
+//oauth
+app.post("/oauth", UserHandler.oauth);
+
+app.post("/save-user-details", UserHandler.createUser);
 app.get("/get-all-users", UserHandler.getAllUser);
 app.get("/get-user/:id", UserHandler.getSpecificUser);
 app.post("/login", UserHandler.login);
-
+app.post("/get-status", UserHandler.userStatus);
+app.put("/verify", UserHandler.verifyUser);
+app.put("/additional-info", UserHandler.additionalInfo);
+app.put("/forgot-password", UserHandler.forgotPassword);
 //Video related routes
 
 app.post("/save-video", upload.single("file"), (req, res) => {

@@ -1,38 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { TextField, MenuItem } from "@mui/material";
 import axios from "axios";
-import Image4 from "../../assets/cartoon_images/4.png";
-import Image6 from "../../assets/cartoon_images/6.png";
-import Image7 from "../../assets/cartoon_images/7.png";
-import Image8 from "../../assets/cartoon_images/8.png";
-import Image9 from "../../assets/cartoon_images/9.png";
-import Image10 from "../../assets/cartoon_images/10.png";
-import Image12 from "../../assets/cartoon_images/12.png";
-import Image13 from "../../assets/cartoon_images/13.png";
-import Image14 from "../../assets/cartoon_images/14.png";
-import Image15 from "../../assets/cartoon_images/15.png";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-function Additional() {
+function Additional(props) {
   const [colleges, setColleges] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
   const [userType, setUserType] = useState("");
   const [selectedCollege, setSelectedCollege] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
-  const images = [
-    Image4,
-    Image6,
-    Image7,
-    Image8,
-    Image9,
-    Image10,
-    Image12,
-    Image13,
-    Image14,
-    Image15,
-  ];
+  const navigate = useNavigate();
+  const currentUser = useSelector((state) => {
+    return state.currEmail[0].text;
+  });
+
+  useEffect(() => {
+    setEmail(currentUser);
+  }, []);
+
   const types = [
     {
       id: "1",
@@ -70,6 +58,22 @@ function Additional() {
     }
   };
 
+  const handleClick = async () => {
+    try {
+      const { data } = await axios.put(`${baseAPI}/additional-info`, {
+        name: name,
+        type: userType,
+        college_id: selectedCollege,
+        department_id: selectedDepartment,
+        email: email,
+      });
+      alert(data.message);
+      props.setNewUser(false);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <div className="additional-details-container h-screen w-screen flex justify-center items-center lg:bg-secondary ">
       <div className="user-info w-full h-full lg:w-8/12 bg-neutral-content  lg:h-5/6 lg:rounded-2xl p-5 flex justify-center items-center flex-col">
@@ -78,7 +82,7 @@ function Additional() {
           New here ? we need few more details
         </h1>
 
-        <div className="fields-container  flex flex-col lg:flex-row lg:flex-wrap h-5/6 lg:h-5/6 justify-evenly items-center w-10/12">
+        <div className="fields-container  flex flex-col    h-5/6 lg:h-4/6 justify-evenly items-center w-10/12">
           <TextField
             id="outlined-basic"
             label="Name"
@@ -169,23 +173,10 @@ function Additional() {
               : null}
           </TextField>
 
-          <div className="flex flex-wrap w-full justify-center items-center">
-            {images.map((image, index) => (
-              <img
-                className={`${selectedImage === index ? "selected" : ""} w-16`}
-                src={image}
-                alt={`image-${index + 1}`}
-                key={`image-${index + 1}`}
-                onClick={() => {
-                  setSelectedImage(index);
-                  console.log(images[0]);
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="flex w-full justify-center lg:justify-end items-center">
-            <button className="btn btn-secondary">Next</button>
+          <div className="flex w-full justify-center  items-center">
+            <button className="btn btn-secondary" onClick={handleClick}>
+              Next
+            </button>
           </div>
         </div>
       </div>

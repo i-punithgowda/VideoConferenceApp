@@ -1,30 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import EduMeetLogo from "../assets/png/EduMeetLogo.png";
 import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 import AuthImage from "../assets/svg/auth.svg";
 import TypeIt from "typeit-react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLoginButton } from "react-social-login-buttons";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authModifier } from "../features/reducers/auth-slice";
+import { currentUserModifier } from "../features/reducers/current-user-slice";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const baseAPI = process.env.REACT_APP_BASEAPI;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const signIn = useGoogleLogin({
     clientId:
       "867159813249-kjf4fe4ne3bujmvmkv4jncaeus9aanbt.apps.googleusercontent.com",
     onSuccess: async (response) => {
       console.log(response);
       const accessToken = response.access_token;
-      const data = await axios.get(
+      const { data } = await axios.get(
         `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${accessToken}`
       );
-      console.log(data);
+      console.log(data.email);
+
+      const res = await axios.post(`${baseAPI}/oauth`, {
+        email: email,
+      });
+      console.log(res);
+
+      if (res.data.status === true) {
+        dispatch(authModifier(true));
+        dispatch(currentUserModifier(data.email));
+        navigate("/dashboard");
+      }
     },
     onError: (error) => {
       console.log("Login Failure. Error: ", error);
     },
   });
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await axios.post(`${baseAPI}/login`, {
+        email: email,
+        password: password,
+      });
+      console.log(data);
+      alert(data.status);
+      if (data.val === true) {
+        dispatch(authModifier(true));
+        dispatch(currentUserModifier(data.email));
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.log(err.message);
+      alert(err.message);
+    }
+  };
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-base-200">
@@ -60,6 +98,8 @@ function Login() {
                 variant="outlined"
                 size="small"
                 sx={{ width: "300px", marginY: "10px" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 id="outlined-basic"
@@ -68,6 +108,8 @@ function Login() {
                 size="small"
                 sx={{ width: "300px", marginY: "10px" }}
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <Link
                 to="/forgot-password"
@@ -75,7 +117,12 @@ function Login() {
               >
                 Recover Password
               </Link>
-              <button className="btn btn-secondary btn-wide my-5">Login</button>
+              <button
+                className="btn btn-secondary btn-wide my-5"
+                onClick={handleLogin}
+              >
+                Login
+              </button>
 
               <GoogleLoginButton
                 onClick={signIn}
