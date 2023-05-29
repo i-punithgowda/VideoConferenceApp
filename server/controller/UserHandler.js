@@ -98,6 +98,17 @@ const UserHandler = {
     }
   },
 
+  getSpecificUserByEmail: async (req, res) => {
+    try {
+      const { email } = req.params;
+      const data = await User.getSpecificUserByEmail(email);
+      res.status(200).send(data);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Something went wrong !! try again later...");
+    }
+  },
+
   login: async (req, res) => {
     try {
       const data = req.body;

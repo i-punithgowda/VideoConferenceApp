@@ -69,7 +69,22 @@ User.getAll = () => {
 User.getSpecificUser = (id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `select id,name,email,user_image,type from User where id='${id}'`,
+      `select id,name,email,type from User where id='${id}'`,
+      (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+};
+
+User.getSpecificUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `select id,name,email,type from User where email='${email}'`,
       (err, results) => {
         if (err) {
           reject(err);

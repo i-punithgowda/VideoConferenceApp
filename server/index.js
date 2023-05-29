@@ -3,7 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 const db = require("./db/db");
 const UserHandler = require("./controller/UserHandler");
-const VideoHandler = require("./controller/VideoHandler");
+const StreamHandler = require("./controller/StreamHandler");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
@@ -42,12 +42,17 @@ app.post("/oauth", UserHandler.oauth);
 app.post("/save-user-details", UserHandler.createUser);
 app.get("/get-all-users", UserHandler.getAllUser);
 app.get("/get-user/:id", UserHandler.getSpecificUser);
-app.post("/login", UserHandler.login);
+app.get("/get-user-email/:email", UserHandler.getSpecificUserByEmail);
 app.post("/get-status", UserHandler.userStatus);
 app.put("/verify", UserHandler.verifyUser);
 app.put("/additional-info", UserHandler.additionalInfo);
 app.put("/forgot-password", UserHandler.forgotPassword);
-//Video related routes
+
+//Stream related routes
+
+app.post("/set-stream-status", StreamHandler.setStreamingStatus);
+app.put("/update-stream-status", StreamHandler.updateStreamingStatus);
+app.post("/save-stream-details", StreamHandler.saveStreamDetails);
 
 app.post("/save-video", upload.single("file"), (req, res) => {
   try {
@@ -61,14 +66,11 @@ app.post("/save-video", upload.single("file"), (req, res) => {
     fs.createReadStream(fileData.path).pipe(fileStream);
 
     // Respond to the client with a success message
-    res.send("File uploaded successfully");
+    res.send({ status: true, video_url: `uploads/${fileData.filename}.mp4` });
   } catch (err) {
     res.send(err);
   }
 });
-app.post("/save-attendance", VideoHandler.SaveAttendance);
-app.post("/save-comment", VideoHandler.SaveComments);
-app.post("/save-reply", VideoHandler.SaveReplies);
 
 db.connect((err) => {
   if (!err) {

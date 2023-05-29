@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IconButton from "@material-ui/core/IconButton";
 import { faComment } from "@fortawesome/free-solid-svg-icons/faComment";
 import SendIcon from "@mui/icons-material/Send";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import io from "socket.io-client";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ function Stream() {
   // const socket = io("http://localhost:3001");
   const isLaptopScreen = useMediaQuery("(min-width: 1280px)");
   const messagesContainerRef = useRef();
-  const [userType, setUserType] = useState("guest");
+  const [userType, setUserType] = useState("");
   const [micOn, setMicOn] = useState(true);
   const [videoOn, setVideoOn] = useState(true);
   const [recordOn, setRecordOn] = useState(true);
@@ -48,6 +50,25 @@ function Stream() {
   const [ScreenShareOn, setScreenShareOn] = useState(true);
   const [messages, setMessages] = useState([]);
   const classes = useStyles();
+
+  const currentUser = useSelector((state) => {
+    return state.currEmail[0].text;
+  });
+  console.log("Current user email : ", currentUser);
+
+  const baseAPI = process.env.REACT_APP_BASEAPI;
+
+  const fetchUserDetails = async () => {
+    const { data } = await axios.get(
+      `${baseAPI}/get-user-email/${currentUser}`
+    );
+    console.log(data);
+    setUserType(data[0].type);
+  };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
 
   const renderedMessages = useMemo(() => {
     return messages.map((message, index) => (
@@ -154,23 +175,16 @@ function Stream() {
                 {videoOn ? <VideocamIcon /> : <VideocamOffIcon />}
               </IconButton>
             </div>
-            <div style={{ backgroundColor: "#F76D6A", borderRadius: "50%" }}>
+            <div style={{ backgroundColor: "", borderRadius: "50%" }}>
               <IconButton style={{ color: "#000" }}>
                 <CallEndIcon />
               </IconButton>
             </div>
+
             <div style={{ backgroundColor: "#E3E0DB", borderRadius: "50%" }}>
               <IconButton
-                disabled={userType && !userType === "host" ? false : true}
-                style={{ color: userType === "host" ? "#000" : "grey" }}
-              >
-                <RadioButtonCheckedIcon />
-              </IconButton>
-            </div>
-            <div style={{ backgroundColor: "#E3E0DB", borderRadius: "50%" }}>
-              <IconButton
-                disabled={userType && !userType === "host" ? false : true}
-                style={{ color: userType === "host" ? "#000" : "grey" }}
+                disabled={userType && userType === "Host" ? false : true}
+                style={{ color: userType === "Host" ? "#000" : "grey" }}
               >
                 {!ScreenShareOn ? <ScreenShareIcon /> : <StopScreenShareIcon />}
               </IconButton>

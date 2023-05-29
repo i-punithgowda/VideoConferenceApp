@@ -118,7 +118,7 @@ function Sidebar() {
                   </a>
                 </li>
 
-                <li>
+                <li id="lol">
                   <a onClick={() => dispatch(authModifier(false))}>Logout</a>
                 </li>
               </ul>
