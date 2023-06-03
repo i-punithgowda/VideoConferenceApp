@@ -53,6 +53,15 @@ app.put("/forgot-password", UserHandler.forgotPassword);
 app.post("/set-stream-status", StreamHandler.setStreamingStatus);
 app.put("/update-stream-status", StreamHandler.updateStreamingStatus);
 app.post("/save-stream-details", StreamHandler.saveStreamDetails);
+app.put("/end-stream", StreamHandler.endStream);
+app.get(
+  "/get-stream-status-host/:email",
+  StreamHandler.getCurrentStreamingStatusofHost
+);
+app.get(
+  "/get-stream-status-guest/:email",
+  StreamHandler.getCurrentStreamingStatusforGuest
+);
 
 app.post("/save-video", upload.single("file"), (req, res) => {
   try {
